@@ -289,12 +289,16 @@ root.keys(globalkeys)
 
 -- {{{ Rules
 awful.rules.rules = {
-  -- All clients will match this rule.
   {
     rule = { class = "Gcr-prompter" },
     properties = { floating = true, ontop = true },
     callback = awful.placement.centered
   },
+  {
+    rule = { class = "URxvt" },
+    properties = { size_hints_honor = false },
+  },
+  -- All clients will match this rule.
   {
     rule = { },
     properties = {
