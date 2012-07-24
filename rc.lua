@@ -7,7 +7,7 @@ require("naughty")
 require("safeinit")
 
 -- {{{ Variable definitions
-beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+beautiful.init(awful.util.getdir("config") .. "/theme/theme.lua")
 terminal = "urxvt"
 
 -- Default modkey.
