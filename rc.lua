@@ -16,6 +16,7 @@ terminal = "urxvt"
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
+alt = "Mod1"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts = {
@@ -48,8 +49,8 @@ end
 powermenu = {
   { "Reload", awesome.restart },
   { "Quit", awesome.quit },
-  { "Reboot", awesome.quit },
-  { "Poweroff", awesome.quit },
+  { "Reboot", function() awful.util.spawn("gksudo reboot") end },
+  { "Poweroff", function () awful.util.spawn("gksudo poweroff") end },
 }
 
 mainmenu = awful.menu({
@@ -205,7 +206,7 @@ globalkeys = awful.util.table.join(
   awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
   awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
 
-  awful.key({ "Control", "Mod1" }, "l", function() awful.util.spawn('slock') end),
+  awful.key({ "Control", alt }, "l", function() awful.util.spawn('slock') end),
 
   -- Prompt
   awful.key({ modkey }, "r", function () promptbox[mouse.screen]:run() end),

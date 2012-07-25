@@ -1,25 +1,26 @@
 theme = {}
 
-theme.font          = "Ubuntu Sans Mono 8"
+theme.font = "Ubuntu Sans Mono 8"
+theme.taglist_font = "Ubuntu Sans Mono 8"
 
-theme.bg_normal     = "#242424"
-theme.bg_focus      = "#242424"
-theme.bg_urgent     = "#242424"
-theme.bg_minimize   = "#242424"
+theme.bg_normal = "#242424"
+theme.bg_focus = "#242424"
+theme.bg_urgent = "#242424"
+theme.bg_minimize = "#242424"
 
-theme.fg_normal     = "#aaaaaa"
-theme.fg_focus      = "#dddddd"
-theme.fg_urgent     = "#f20024"
-theme.fg_minimize   = "#ffffff"
+theme.fg_normal = "#aaaaaa"
+theme.fg_focus = "#dddddd"
+theme.fg_urgent = "#f20024"
+theme.fg_minimize = "#ffffff"
 
-theme.border_width  = "1"
+theme.border_width = "1"
 theme.border_normal = "#000000"
-theme.border_focus  = "#535d6c"
+theme.border_focus = "#535d6c"
 theme.border_marked = "#91231c"
 
 theme.taglist_fg_focus = "#a4c433"
-theme.taglist_bg_focus      = "#373737"
-theme.taglist_bg_urgent     = "#373737"
+theme.taglist_bg_focus = "#454545"
+theme.taglist_bg_urgent = "#373737"
 
 -- There are other variable sets
 -- overriding the default one when
