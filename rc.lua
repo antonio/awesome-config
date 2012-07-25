@@ -56,6 +56,7 @@ powermenu = {
 mainmenu = awful.menu({
   items = {
     { "Terminal", terminal },
+    { "Chromium", function() awful.util.spawn("chromium") end},
     { "Power", powermenu },
   }
 })
