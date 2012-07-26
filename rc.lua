@@ -300,6 +300,10 @@ awful.rules.rules = {
     rule = { class = "URxvt" },
     properties = { size_hints_honor = false },
   },
+  {
+    rule = { class = "Exe" }, -- Chromium full screen videos
+    properties = { floating =true },
+  },
   -- All clients will match this rule.
   {
     rule = { },
