@@ -68,25 +68,27 @@ launcher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
 -- {{{ Wibox
 -- Original version from http://awesome.naquadah.org/wiki/Change_keyboard_maps
 -- TODO: Refactor: scripts and code cleanup
--- TODO: Use flag icons instead of text
 -- TODO: Keybinds should change between the us layouts only
 -- TODO: Maybe use signals so that depending on the window, the layout is chosen
 kbdcfg = {}
 kbdcfg.cmd = "setxkbmap"
 awful.util.spawn_with_shell("setxkbmap us && xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'")
-kbdcfg.layout = { { "us", "" }, { "us", "intl" }, { "es", "" } }
+kbdcfg.layout = { { "us", "", "us.png" }, { "us", "intl", "us.png" }, { "es", "", "es.png" } }
 kbdcfg.current = 1
-kbdcfg.widget = widget({ type = "textbox", align = "right" })
-kbdcfg.widget.text = " " .. kbdcfg.layout[kbdcfg.current][1] .. kbdcfg.layout[kbdcfg.current][2] .. " "
+kbdcfg.code_widget = widget({ type = "textbox", align = "right" })
+kbdcfg.code_widget.text = " " .. kbdcfg.layout[kbdcfg.current][1] .. kbdcfg.layout[kbdcfg.current][2] .. " "
+kbdcfg.flags_widget = widget({ type = "imagebox", align = "right" })
+kbdcfg.flags_widget.image = image(awful.util.getdir("config") .. "/art/" .. kbdcfg.layout[kbdcfg.current][3])
 kbdcfg.switch = function ()
   kbdcfg.current = kbdcfg.current % #(kbdcfg.layout) + 1
   local t = kbdcfg.layout[kbdcfg.current]
-  kbdcfg.widget.text = " " .. t[1] .. " " .. t[2] .. " "
+  kbdcfg.code_widget.text = " " .. t[1] .. " " .. t[2] .. " "
+  kbdcfg.flags_widget.image = image(awful.util.getdir("config") .. "/art/" .. t[3])
   awful.util.spawn_with_shell(kbdcfg.cmd .. " " .. t[1] .. " " .. t[2] .. " && xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'")
 end
 
 -- Mouse bindings
-kbdcfg.widget:buttons(awful.util.table.join(
+kbdcfg.code_widget:buttons(awful.util.table.join(
 awful.button({ }, 1, function () kbdcfg.switch() end)
 ))
 -- Create a textclock widget
@@ -171,7 +173,8 @@ for s = 1, screen.count() do
     layoutbox[s],
     textclock,
     s == 1 and systray or nil,
-    kbdcfg.widget,
+    kbdcfg.code_widget,
+    kbdcfg.flags_widget,
     tasklist[s],
     layout = awful.widget.layout.horizontal.rightleft
   }
