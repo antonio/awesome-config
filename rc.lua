@@ -17,6 +17,7 @@
 -- Volume widget (with bindings)
 
 require("awful")
+require("awful.remote")
 require("awful.autofocus")
 require("awful.rules")
 require("beautiful")
@@ -107,7 +108,7 @@ kbdcfg.code_widget:buttons(awful.util.table.join(
 awful.button({ }, 1, function () kbdcfg.switch() end)
 ))
 -- Create a textclock widget
-textclock = awful.widget.textclock({ align = "right" })
+textclock = awful.widget.textclock({ align = "right" }, " %D %H:%M ")
 
 -- Create a systray
 systray = widget({ type = "systray" })
