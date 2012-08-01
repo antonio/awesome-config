@@ -73,7 +73,7 @@ launcher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
 kbdcfg = {}
 kbdcfg.cmd = "setxkbmap"
 awful.util.spawn_with_shell("setxkbmap us && xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'")
-kbdcfg.layout = { { "us", "", "us.png" }, { "us", "intl", "us.png" }, { "es", "", "es.png" } }
+kbdcfg.layout = { { "us", "", "en.png" }, { "us", "intl", "en.png" }, { "es", "", "es.png" } }
 kbdcfg.current = 1
 kbdcfg.code_widget = widget({ type = "textbox", align = "right" })
 kbdcfg.code_widget.text = " " .. kbdcfg.layout[kbdcfg.current][1] .. kbdcfg.layout[kbdcfg.current][2] .. " "
