@@ -1,3 +1,21 @@
+-- TODO:
+-- Calendar widget
+-- Battery widget
+-- - Change icon depending on if it is plugged or not
+-- - Notify when power is low
+-- CPU widget
+-- Mem widget
+-- HD widget
+-- Keyboard layout selector widget
+-- - Refactor: scripts and code cleanup
+-- - Keybinds should change between the us layouts only
+-- - Maybe use signals so that depending on the window, the layout is chosen
+-- - Display a selection menu on right click
+-- Modularize, requiring files
+-- MPD widget
+-- Pacman widget
+-- Volume widget (with bindings)
+
 require("awful")
 require("awful.autofocus")
 require("awful.rules")
@@ -67,9 +85,6 @@ launcher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
 
 -- {{{ Wibox
 -- Original version from http://awesome.naquadah.org/wiki/Change_keyboard_maps
--- TODO: Refactor: scripts and code cleanup
--- TODO: Keybinds should change between the us layouts only
--- TODO: Maybe use signals so that depending on the window, the layout is chosen
 kbdcfg = {}
 kbdcfg.cmd = "setxkbmap"
 awful.util.spawn_with_shell("setxkbmap us && xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'")
@@ -161,7 +176,7 @@ for s = 1, screen.count() do
   end, tasklist.buttons)
 
   -- Create the wibox
-  wibox[s] = awful.wibox({ position = "top", screen = s })
+  wibox[s] = awful.wibox({ position = "top", screen = s, height = 18 })
   -- Add widgets to the wibox - order matters
   wibox[s].widgets = {
     {
