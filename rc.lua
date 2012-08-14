@@ -1,8 +1,5 @@
 -- TODO:
 -- Calendar widget
--- Battery widget
--- - Change icon depending on if it is plugged or not
--- - Notify when power is low
 -- CPU widget
 -- Mem widget
 -- HD widget
@@ -85,6 +82,8 @@ launcher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
 -- }}}
 
 -- {{{ Wibox
+separator = widget {type = "textbox"}
+separator.text = " | "
 -- Original version from http://awesome.naquadah.org/wiki/Change_keyboard_maps
 kbdcfg = {}
 kbdcfg.cmd = "setxkbmap"
@@ -92,7 +91,7 @@ awful.util.spawn_with_shell("setxkbmap us && xmodmap -e 'clear Lock' -e 'keycode
 kbdcfg.layout = { { "us", "", "en.png" }, { "us", "intl", "en.png" }, { "es", "", "es.png" } }
 kbdcfg.current = 1
 kbdcfg.code_widget = widget({ type = "textbox", align = "right" })
-kbdcfg.code_widget.text = " " .. kbdcfg.layout[kbdcfg.current][1] .. kbdcfg.layout[kbdcfg.current][2] .. " "
+kbdcfg.code_widget.text = " " .. kbdcfg.layout[kbdcfg.current][1] .. kbdcfg.layout[kbdcfg.current][2]
 kbdcfg.flags_widget = widget({ type = "imagebox", align = "right" })
 kbdcfg.flags_widget.image = image(awful.util.getdir("config") .. "/art/" .. kbdcfg.layout[kbdcfg.current][3])
 kbdcfg.switch = function ()
@@ -103,12 +102,33 @@ kbdcfg.switch = function ()
   awful.util.spawn_with_shell(kbdcfg.cmd .. " " .. t[1] .. " " .. t[2] .. " && xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'")
 end
 
+-- Battery widget
+-- - Change icon depending on if it is plugged or not
+-- - Notify when power is low
+-- - How to use unicode characters?
+-- TODO: Modularize
+battery = {}
+battery.display_info = function ()
+                         local icon = awful.util.pread("battery_icon")
+                         local value = awful.util.pread("battery")
+                         battery.tooltip:set_text(awful.util.pread("acpi -b"))
+                         return "<span font=\'tamsynmod\'>" .. icon .. " </span>" .. value
+                       end
+battery.timer = timer { timeout = 60 }
+battery.timer:add_signal("timeout", function () battery.widget.text = battery.display_info() end)
+battery.timer:start()
+battery.widget = widget({ type = "textbox" })
+battery.tooltip = awful.tooltip {}
+battery.tooltip:add_to_object(battery.widget)
+battery.tooltip:set_text(awful.util.pread("acpi -b"))
+battery.widget.text = battery.display_info()
+
 -- Mouse bindings
 kbdcfg.code_widget:buttons(awful.util.table.join(
 awful.button({ }, 1, function () kbdcfg.switch() end)
 ))
 -- Create a textclock widget
-textclock = awful.widget.textclock({ align = "right" }, " %D %H:%M ")
+textclock = awful.widget.textclock({ align = "right" }, "%D %H:%M")
 
 -- Create a systray
 systray = widget({ type = "systray" })
@@ -187,10 +207,16 @@ for s = 1, screen.count() do
       layout = awful.widget.layout.horizontal.leftright
     },
     layoutbox[s],
+    separator,
     textclock,
+    separator,
     s == 1 and systray or nil,
+    separator,
     kbdcfg.code_widget,
     kbdcfg.flags_widget,
+    separator,
+    battery.widget,
+    separator,
     tasklist[s],
     layout = awful.widget.layout.horizontal.rightleft
   }
@@ -271,7 +297,6 @@ clientkeys = awful.util.table.join(
   awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
   awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
   awful.key({ "Shift" }, "Shift_R", function () kbdcfg.switch() end),
-  awful.key({ modkey,           }, "b",      function() awful.util.spawn("battery")        end),
   awful.key({ modkey,           }, "m",      function (c)
                                                c.maximized_horizontal = not c.maximized_horizontal
                                                c.maximized_vertical   = not c.maximized_vertical
@@ -391,3 +416,4 @@ end)
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+
