@@ -97,7 +97,7 @@ kbdcfg.flags_widget.image = image(awful.util.getdir("config") .. "/art/" .. kbdc
 kbdcfg.switch = function ()
   kbdcfg.current = kbdcfg.current % #(kbdcfg.layout) + 1
   local t = kbdcfg.layout[kbdcfg.current]
-  kbdcfg.code_widget.text = " " .. t[1] .. " " .. t[2] .. " "
+  kbdcfg.code_widget.text = " " .. t[1] .. " " .. t[2]
   kbdcfg.flags_widget.image = image(awful.util.getdir("config") .. "/art/" .. t[3])
   awful.util.spawn_with_shell(kbdcfg.cmd .. " " .. t[1] .. " " .. t[2] .. " && xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'")
 end
