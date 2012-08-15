@@ -36,6 +36,7 @@ theme.taglist_bg_urgent = "#373737"
 theme.tooltip_font = theme.font
 theme.tooltip_fg_color = theme.fg_normal
 theme.tooltip_bg_color = theme.bg_normal
+theme.tooltip_border_color = theme.border_focus
 
 -- Display the taglist squares
 theme.taglist_squares_sel   = awful.util.getdir("config") .. "/theme/taglist/squarefw.png"
