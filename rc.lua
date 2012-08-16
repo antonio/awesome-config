@@ -1,7 +1,6 @@
 -- TODO:
 -- Calendar widget
 -- CPU widget
--- Mem widget
 -- HD widget
 -- Keyboard layout selector widget
 -- - Refactor: scripts and code cleanup
@@ -135,8 +134,24 @@ temperature.timer:start()
 temperature.widget = widget({ type = "textbox" })
 temperature.tooltip = awful.tooltip {}
 temperature.tooltip:add_to_object(temperature.widget)
-temperature.tooltip:set_text(awful.util.pread("sensors"))
+temperature.tooltip:set_text(awful.util.pread("sensors | grep 'Core 0'"))
 temperature.widget.text = temperature.display_info()
+
+memory = {}
+memory.display_info = function ()
+                         local icon = "þ"
+                         local value = awful.util.pread("free -h | grep Mem | awk {'print $4 \"/\" $2'}")
+                         memory.tooltip:set_text("\n" .. awful.util.pread("free -h"))
+                         return "<span font=\'tamsynmod\'>" .. icon .. " </span>" .. value
+                       end
+memory.timer = timer { timeout = 60 }
+memory.timer:add_signal("timeout", function () memory.widget.text = memory.display_info() end)
+memory.timer:start()
+memory.widget = widget({ type = "textbox" })
+memory.tooltip = awful.tooltip {}
+memory.tooltip:add_to_object(memory.widget)
+memory.tooltip:set_text(awful.util.pread("free -h"))
+memory.widget.text = memory.display_info()
 
 -- Mouse bindings
 kbdcfg.code_widget:buttons(awful.util.table.join(
@@ -233,6 +248,8 @@ for s = 1, screen.count() do
     battery.widget,
     separator,
     temperature.widget,
+    separator,
+    memory.widget,
     separator,
     tasklist[s],
     layout = awful.widget.layout.horizontal.rightleft
