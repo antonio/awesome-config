@@ -103,7 +103,6 @@ kbdcfg.switch = function ()
 end
 
 -- Battery widget
--- - Change icon depending on if it is plugged or not
 -- - Notify when power is low
 -- - How to use unicode characters?
 -- TODO: Modularize
@@ -111,7 +110,7 @@ battery = {}
 battery.display_info = function ()
                          local icon = awful.util.pread("battery_icon")
                          local value = awful.util.pread("battery")
-                         battery.tooltip:set_text(awful.util.pread("acpi -b"))
+                         battery.tooltip:set_text("\n" .. awful.util.pread("acpi -b"))
                          return "<span font=\'tamsynmod\'>" .. icon .. " </span>" .. value
                        end
 battery.timer = timer { timeout = 60 }
@@ -122,6 +121,22 @@ battery.tooltip = awful.tooltip {}
 battery.tooltip:add_to_object(battery.widget)
 battery.tooltip:set_text(awful.util.pread("acpi -b"))
 battery.widget.text = battery.display_info()
+
+temperature = {}
+temperature.display_info = function ()
+                         local icon = "±"
+                         local value = awful.util.pread("sensors | grep 'Core 0' | awk {'print $3'}")
+                         temperature.tooltip:set_text("\n" .. awful.util.pread("sensors | grep 'Core 0'"))
+                         return "<span font=\'tamsynmod\'>" .. icon .. " </span>" .. value
+                       end
+temperature.timer = timer { timeout = 60 }
+temperature.timer:add_signal("timeout", function () temperature.widget.text = temperature.display_info() end)
+temperature.timer:start()
+temperature.widget = widget({ type = "textbox" })
+temperature.tooltip = awful.tooltip {}
+temperature.tooltip:add_to_object(temperature.widget)
+temperature.tooltip:set_text(awful.util.pread("sensors"))
+temperature.widget.text = temperature.display_info()
 
 -- Mouse bindings
 kbdcfg.code_widget:buttons(awful.util.table.join(
@@ -216,6 +231,8 @@ for s = 1, screen.count() do
     kbdcfg.flags_widget,
     separator,
     battery.widget,
+    separator,
+    temperature.widget,
     separator,
     tasklist[s],
     layout = awful.widget.layout.horizontal.rightleft
