@@ -106,10 +106,13 @@ end
 -- - How to use unicode characters?
 -- TODO: Modularize
 battery = {}
+battery.tooltip_text = function ()
+                         return awful.util.pread("echo -n $(acpi -b)")
+                       end
 battery.display_info = function ()
                          local icon = awful.util.pread("battery_icon")
                          local value = awful.util.pread("battery")
-                         battery.tooltip:set_text("\n" .. awful.util.pread("acpi -b"))
+                         battery.tooltip:set_text(battery.tooltip_text())
                          return "<span font=\'tamsynmod\'>" .. icon .. " </span>" .. value
                        end
 battery.timer = timer { timeout = 60 }
@@ -118,14 +121,17 @@ battery.timer:start()
 battery.widget = widget({ type = "textbox" })
 battery.tooltip = awful.tooltip {}
 battery.tooltip:add_to_object(battery.widget)
-battery.tooltip:set_text(awful.util.pread("acpi -b"))
+battery.tooltip:set_text(battery.tooltip_text())
 battery.widget.text = battery.display_info()
 
 temperature = {}
+temperature.tooltip_text = function ()
+                             return awful.util.pread("echo -n $(sensors | grep 'Core 0')")
+                           end
 temperature.display_info = function ()
                          local icon = "±"
                          local value = awful.util.pread("sensors | grep 'Core 0' | awk {'print $3'}")
-                         temperature.tooltip:set_text("\n" .. awful.util.pread("sensors | grep 'Core 0'"))
+                         temperature.tooltip:set_text(temperature.tooltip_text())
                          return "<span font=\'tamsynmod\'>" .. icon .. " </span>" .. value
                        end
 temperature.timer = timer { timeout = 60 }
@@ -134,14 +140,17 @@ temperature.timer:start()
 temperature.widget = widget({ type = "textbox" })
 temperature.tooltip = awful.tooltip {}
 temperature.tooltip:add_to_object(temperature.widget)
-temperature.tooltip:set_text(awful.util.pread("sensors | grep 'Core 0'"))
+temperature.tooltip:set_text(temperature.tooltip_text())
 temperature.widget.text = temperature.display_info()
 
 memory = {}
+memory.tooltip_text = function()
+                        return awful.util.pread("\n" .. "free -h | col -x")
+                      end
 memory.display_info = function ()
                          local icon = "þ"
                          local value = awful.util.pread("free -h | grep Mem | awk {'print $4 \"/\" $2'}")
-                         memory.tooltip:set_text("\n" .. awful.util.pread("free -h"))
+                         memory.tooltip:set_text(memory.tooltip_text())
                          return "<span font=\'tamsynmod\'>" .. icon .. " </span>" .. value
                        end
 memory.timer = timer { timeout = 60 }
@@ -150,7 +159,7 @@ memory.timer:start()
 memory.widget = widget({ type = "textbox" })
 memory.tooltip = awful.tooltip {}
 memory.tooltip:add_to_object(memory.widget)
-memory.tooltip:set_text(awful.util.pread("free -h"))
+memory.tooltip:set_text(memory.tooltip_text())
 memory.widget.text = memory.display_info()
 
 -- Mouse bindings
