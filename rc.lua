@@ -167,7 +167,7 @@ kbdcfg.code_widget:buttons(awful.util.table.join(
 awful.button({ }, 1, function () kbdcfg.switch() end)
 ))
 -- Create a textclock widget
-textclock = awful.widget.textclock({ align = "right" }, "%D %H:%M")
+textclock = awful.widget.textclock({ align = "right" }, "%d/%m/%y %H:%M")
 
 -- Create a systray
 systray = widget({ type = "systray" })
