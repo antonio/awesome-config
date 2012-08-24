@@ -101,6 +101,32 @@ kbdcfg.switch = function ()
   awful.util.spawn_with_shell(kbdcfg.cmd .. " " .. t[1] .. " " .. t[2] .. " && xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'")
 end
 
+
+pacman = {}
+pacman.tooltip_text = function ()
+                         update_list = awful.util.pread("echo -n $(pacman -Qu)")
+                         if update_list == "" then
+                           local ghost = "<span font='stlarch'></span>"
+                           return ghost .. " - Hooray! Nothing to update!"
+                         else
+                           return update_list
+                         end
+                       end
+pacman.display_info = function ()
+                         local icon = "<span font='stlarch'></span>"
+                         local value = awful.util.pread("echo -n $(pacman -Qu | wc -l)")
+                         pacman.tooltip:set_text(pacman.tooltip_text())
+                         return icon ..  " " .. value
+                       end
+pacman.timer = timer { timeout = 60 }
+pacman.timer:add_signal("timeout", function () pacman.widget.text = pacman.display_info() end)
+pacman.timer:start()
+pacman.widget = widget({ type = "textbox" })
+pacman.tooltip = awful.tooltip {}
+pacman.tooltip:add_to_object(pacman.widget)
+pacman.tooltip:set_text(pacman.tooltip_text())
+pacman.widget.text = pacman.display_info()
+
 -- Battery widget
 -- - Notify when power is low
 -- - How to use unicode characters?
@@ -259,6 +285,8 @@ for s = 1, screen.count() do
     temperature.widget,
     separator,
     memory.widget,
+    separator,
+    pacman.widget,
     separator,
     tasklist[s],
     layout = awful.widget.layout.horizontal.rightleft
