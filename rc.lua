@@ -348,6 +348,7 @@ globalkeys = awful.util.table.join(
   awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
 
   awful.key({ "Control", alt }, "l", function() awful.util.spawn('slock') end),
+  awful.key({ "Control", alt }, "s", function() awful.util.spawn('systemctl suspend') end),
 
   -- Prompt
   awful.key({ modkey }, "r", function () promptbox[mouse.screen]:run() end),
