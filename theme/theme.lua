@@ -14,7 +14,7 @@ theme.fg_focus = "#dddddd"
 theme.fg_urgent = "#f20024"
 theme.fg_minimize = "#ffffff"
 
-theme.border_width = "1"
+theme.border_width = 1
 theme.border_normal = "#000000"
 theme.border_focus = "#535d6c"
 theme.border_marked = "#91231c"
@@ -47,8 +47,8 @@ theme.tasklist_floating_icon = awful.util.getdir("config") .. "/theme/tasklist/f
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
 theme.menu_submenu_icon = awful.util.getdir("config") .. "/theme/submenu.png"
-theme.menu_height = "15"
-theme.menu_width  = "100"
+theme.menu_height = 15
+theme.menu_width  = 100
 
 -- You can add as many variables as
 -- you wish and access them by using
@@ -79,8 +79,7 @@ theme.titlebar_maximized_button_focus_inactive  = awful.util.getdir("config") ..
 theme.titlebar_maximized_button_normal_active = awful.util.getdir("config") .. "/theme/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active  = awful.util.getdir("config") .. "/theme/titlebar/maximized_focus_active.png"
 
--- You can use your own command to set your wallpaper
-theme.wallpaper_cmd = { "feh --bg-center " .. awful.util.getdir("config") .. "/theme/background.png" }
+theme.wallpaper = awful.util.getdir("config") .. "/theme/background.png"
 
 -- You can use your own layout icons like this:
 theme.layout_fairh = awful.util.getdir("config") .. "/theme/layouts/fairhw.png"
@@ -97,6 +96,10 @@ theme.layout_spiral  = awful.util.getdir("config") .. "/theme/layouts/spiralw.pn
 theme.layout_dwindle = awful.util.getdir("config") .. "/theme/layouts/dwindlew.png"
 
 theme.awesome_icon = "/usr/share/awesome/icons/awesome16.png"
+
+-- Define the icon theme for application icons. If not set then the icons 
+-- from /usr/share/icons and /usr/share/icons/hicolor will be used.
+theme.icon_theme = nil
 
 return theme
 -- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80
