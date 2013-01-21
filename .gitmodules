@@ -1,0 +1,3 @@
+[submodule "awesome_pomodoro"]
+	path = awesome_pomodoro
+	url = https://github.com/antonio/awesome_pomodoro.git
