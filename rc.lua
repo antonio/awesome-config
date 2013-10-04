@@ -365,6 +365,11 @@ awful.rules.rules = {
     callback = awful.placement.centered
   },
   {
+    rule = { class = "Msgcompose" },
+    properties = { floating = true, ontop = false },
+    callback = awful.placement.centered
+  },
+  {
     rule = { class = "URxvt" },
     properties = { size_hints_honor = false },
   },
