@@ -208,7 +208,9 @@ for s = 1, screen.count() do
     battery_widget = wibox.widget.textbox()
     battery_widget:set_text(get_battery())
     battery_timer = timer({ timeout = 60 })
-    battery_timer:connect_signal("timeout", get_battery)
+    battery_timer:connect_signal("timeout", function()
+      battery_widget:set_text(get_battery())
+    end)
     battery_timer:start()
 
     -- Widgets that are aligned to the right
