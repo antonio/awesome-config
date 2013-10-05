@@ -200,8 +200,20 @@ for s = 1, screen.count() do
 
     pomodoro = require("awesome_pomodoro")
 
+    separator = ' |'
+    get_battery = function()
+      local prefix = 'BAT:'
+      return prefix .. awful.util.pread("acpi -b | cut -d ',' -f 2") .. separator
+    end
+    battery_widget = wibox.widget.textbox()
+    battery_widget:set_text(get_battery())
+    battery_timer = timer({ timeout = 60 })
+    battery_timer:connect_signal("timeout", get_battery)
+    battery_timer:start()
+
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
+    right_layout:add(battery_widget)
     --right_layout:add(pomodoro.widget)
     right_layout:add(mytextclock)
     if s == 1 then right_layout:add(wibox.widget.systray()) end
